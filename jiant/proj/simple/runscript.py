@@ -101,9 +101,13 @@ def create_and_write_task_configs(task_name_list, data_dir, task_config_base_pat
         task_config_path_dict[task_name] = task_config_path
     return task_config_path_dict
 
+class Hfc(object):
+    def __init__(self, model_type):
+        self.model_type = model_type
 
 def run_simple(args: RunConfiguration, with_continue: bool = False):
-    hf_config = AutoConfig.from_pretrained(args.hf_pretrained_model_name_or_path)
+    hf_config = Hfc(args.hf_pretrained_model_name_or_path)  #AutoConfig.from_pretrained(args.hf_pretrained_model_name_or_path)
+
     model_cache_path = replace_none(
         args.model_cache_path, default=os.path.join(args.exp_dir, "models")
     )
@@ -125,12 +129,12 @@ def run_simple(args: RunConfiguration, with_continue: bool = False):
                 )
 
         # === Step 2: Download models === #
-        if not os.path.exists(os.path.join(model_cache_path, hf_config.model_type)):
-            print("Downloading model")
-            export_model.export_model(
-                hf_pretrained_model_name_or_path=args.hf_pretrained_model_name_or_path,
-                output_base_path=os.path.join(model_cache_path, hf_config.model_type),
-            )
+        # if not os.path.exists(os.path.join(model_cache_path, hf_config.model_type)):
+            # print("Downloading model")
+            # export_model.export_model(
+            #     hf_pretrained_model_name_or_path=args.hf_pretrained_model_name_or_path,
+            #     output_base_path=os.path.join(model_cache_path, hf_config.model_type),
+            # )
 
         # === Step 3: Tokenize and cache === #
         phase_task_dict = {
