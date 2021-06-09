@@ -106,7 +106,7 @@ class Hfc(object):
         self.model_type = model_type
 
 def run_simple(args: RunConfiguration, with_continue: bool = False):
-    hf_config = Hfc(args.hf_pretrained_model_name_or_path)  #AutoConfig.from_pretrained(args.hf_pretrained_model_name_or_path)
+    hf_config = AutoConfig.from_pretrained(args.hf_pretrained_model_name_or_path)
 
     model_cache_path = replace_none(
         args.model_cache_path, default=os.path.join(args.exp_dir, "models")

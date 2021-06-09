@@ -53,7 +53,7 @@ def setup_jiant_model(
         JiantModel nn.Module.
 
     """
-    if hf_pretrained_model_name_or_path == "mixer-config":
+    if hf_pretrained_model_name_or_path == "roberta-base":
         encoder = mixer_s16_224()
     # hf_model = transformers.AutoModel.from_pretrained(hf_pretrained_model_name_or_path)
     # print("hf_model: ", hf_model)
