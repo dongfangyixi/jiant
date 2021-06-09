@@ -52,6 +52,8 @@ def setup_jiant_model(
 
     """
     hf_model = transformers.AutoModel.from_pretrained(hf_pretrained_model_name_or_path)
+    print("hf_model: ", hf_model)
+    exit(0)
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         hf_pretrained_model_name_or_path, use_fast=False
     )

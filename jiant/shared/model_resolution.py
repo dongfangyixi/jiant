@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
 from jiant.utils.python.datastructures import BiDict
-
 import transformers
 
 
@@ -15,6 +14,7 @@ class ModelArchitectures(Enum):
     MBART = "mbart"
     ELECTRA = "electra"
     DEBERTAV2 = "deberta-v2"
+    MLPMIXER = "mlpmixer"
 
     @classmethod
     def from_model_type(cls, model_type: str):
@@ -32,6 +32,7 @@ TOKENIZER_CLASS_DICT = BiDict(
         ModelArchitectures.MBART: transformers.MBartTokenizer,
         ModelArchitectures.ELECTRA: transformers.ElectraTokenizer,
         ModelArchitectures.DEBERTAV2: transformers.DebertaV2Tokenizer,
+        ModelArchitectures.MLPMIXER: transformers.RobertaTokenizer,
     }
 )
 

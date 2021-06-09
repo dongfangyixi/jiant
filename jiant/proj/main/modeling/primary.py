@@ -579,3 +579,46 @@ class JiantMBartModel(JiantBartModel):
 
     def get_mlm_weights_dict(self, weights_dict):
         raise NotImplementedError()
+
+
+
+@JiantTransformersModelFactory.register(ModelArchitectures.MLPMIXER)
+class JiantMixerModel(JiantTransformersModel):
+    def __init__(self, baseObject):
+        super().__init__(baseObject)
+
+    @classmethod
+    def normalize_tokenizations(cls, tokenizer, space_tokenization, target_tokenization):
+        """See tokenization_normalization.py for details"""
+        space_tokenization = [token.lower() for token in space_tokenization]
+        modifed_space_tokenization = bow_tag_tokens(space_tokenization)
+        modifed_target_tokenization = process_sentencepiece_tokens(target_tokenization)
+
+        return modifed_space_tokenization, modifed_target_tokenization
+
+    def get_feat_spec(self, max_seq_length):
+        # XLM-RoBERTa is weird
+        # token 0 = '<s>' which is the cls_token
+        # token 1 = '</s>' which is the sep_token
+        # Also two '</s>'s are used between sentences. Yes, not '</s><s>'.
+        return FeaturizationSpec(
+            max_seq_length=max_seq_length,
+            cls_token_at_end=False,
+            pad_on_left=False,
+            cls_token_segment_id=0,
+            pad_token_segment_id=0,
+            pad_token_id=1,  # XLM-RoBERTa uses pad_token_id = 1
+            pad_token_mask_id=0,
+            sequence_a_segment_id=0,
+            sequence_b_segment_id=0,  # XLM-RoBERTa has no token_type_ids
+            sep_token_extra=True,)
+
+    def get_mlm_weights_dict(self, weights_dict):
+        mlm_weights_dict = {
+            strings.remove_prefix(k, "lm_head."): v for k, v in weights_dict.items()
+        }
+        mlm_weights_dict["decoder.bias"] = mlm_weights_dict["bias"]
+        return mlm_weights_dict
+
+
+
