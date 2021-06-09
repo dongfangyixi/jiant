@@ -17,6 +17,8 @@ from jiant.proj.main.modeling.taskmodels import JiantTaskModelFactory, Taskmodel
 
 from jiant.shared.model_resolution import ModelArchitectures
 from jiant.tasks.core import Task
+from timm.models.mlp_mixer import mixer_s16_224
+
 
 
 def setup_jiant_model(
@@ -51,13 +53,17 @@ def setup_jiant_model(
         JiantModel nn.Module.
 
     """
-    hf_model = transformers.AutoModel.from_pretrained(hf_pretrained_model_name_or_path)
-    print("hf_model: ", hf_model)
-    exit(0)
+    if hf_pretrained_model_name_or_path == "mixer_s16_224":
+        encoder = mixer_s16_224()
+    # hf_model = transformers.AutoModel.from_pretrained(hf_pretrained_model_name_or_path)
+    # print("hf_model: ", hf_model)
+    # exit(0)
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         hf_pretrained_model_name_or_path, use_fast=False
     )
-    encoder = primary.JiantTransformersModelFactory()(hf_model)
+    print("tokenizer", tokenizer)
+    exit(0)
+    # encoder = primary.JiantTransformersModelFactory()(hf_model)
     taskmodels_dict = {
         taskmodel_name: create_taskmodel(
             task=task_dict[task_name_list[0]],  # Take the first task
