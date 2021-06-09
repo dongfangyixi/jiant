@@ -143,9 +143,9 @@ def run_loop(args: RunConfiguration, checkpoint=None):
             quick_init_out=quick_init_out,
             verbose=True,
         )
-        if is_resumed:
-            runner.load_state(checkpoint["runner_state"])
-            del checkpoint["runner_state"]
+        # if is_resumed:
+        #     runner.load_state(checkpoint["runner_state"])
+        #     del checkpoint["runner_state"]
         checkpoint_saver = jiant_runner.CheckpointSaver(
             metadata={"args": args.to_dict()},
             save_path=os.path.join(args.output_dir, "checkpoint.p"),
@@ -165,9 +165,9 @@ def run_loop(args: RunConfiguration, checkpoint=None):
                 load_best_model=True,
                 log_writer=quick_init_out.log_writer,
             )
-            if is_resumed:
-                metarunner.load_state(checkpoint["metarunner_state"])
-                del checkpoint["metarunner_state"]
+            # if is_resumed:
+            #     metarunner.load_state(checkpoint["metarunner_state"])
+            #     del checkpoint["metarunner_state"]
             metarunner.run_train_loop()
 
         if args.do_val:
