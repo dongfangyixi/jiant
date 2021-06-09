@@ -36,7 +36,7 @@ class RunConfiguration(zconf.RunConfig):
 
     # === Misc parameters === #
     train_batch_size = zconf.attr(type=int, default=32)
-    max_seq_length = zconf.attr(type=int, default=256)
+    max_seq_length = zconf.attr(type=int, default=84)
     num_train_epochs = zconf.attr(type=float, default=3)
     train_examples_cap = zconf.attr(type=int, default=None)
     create_config = zconf.attr(action="store_true")

@@ -296,8 +296,7 @@ class JiantRobertaModel(JiantTransformersModel):
             pad_token_mask_id=0,
             sequence_a_segment_id=0,
             sequence_b_segment_id=0,  # RoBERTa has no token_type_ids
-            sep_token_extra=True,
-        )
+            sep_token_extra=True,)
 
 
 @JiantTransformersModelFactory.register(ModelArchitectures.DEBERTAV2)
